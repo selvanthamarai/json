@@ -1,0 +1,132 @@
+<html>
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            var $library = $('#library');
+            var $bookname = $('#bookname');
+            var $authorname = $('#authorname');
+            var $bookprice = $('#bookprice');
+            function getbook(lib) {
+                console.log(lib)
+                $employee.append(
+
+                    '<tr class=" row">' +
+                    '<td class="list-group-item col-md-3">' + lib.id + '</td>' +
+                    '<td class="list-group-item col-md-3">' + lib.bookName + '</td>' +
+                    '<td class="list-group-item col-md-3">' + lib.authorName + '</td>' +
+                    '<td class="list-group-item col-md-3">' + lib.bookPrice + '</td>' +
+                    '</tr>');
+
+            }
+
+            $('#view').click(function () {
+               
+                $.ajax({
+                   
+                    // $('#view').on('click', function () {
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    url: "http://localhost:5050/lib/getall",
+                    //data:"{'data1':'" + productName+ "', 'data2':'" +productMrp+"'}",
+                    success: function (library) {
+                        console.log(library)
+                        $.each(library, function (i, lib) {
+                            getbook(lib);
+                            //    alert(' view data');
+
+                        });
+                        /* function addProduct(prod) {
+                 console.log(prod)
+                 $product.append('<li>productno:' + prod.id + 'name:' + prod.productName + 'mrp:' + prod.productMrp + '<li>');
+             }*/
+
+                    },
+                    error: function () {
+                        alert('error view data');
+                    }
+                })
+            })
+
+            $('#insert').click(function () {
+                console.log("test");
+                var lib = {
+                    bookName: $bookName.val(),
+                    authorName: $authorName.val(),
+                    bookPrice:$bookPrice.val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: 'http://localhost:5050/lib/add',
+                    data: JSON.stringify(lib),
+                    success: function (library) {
+                        console.log(library);
+                        addbook(lib);
+                    },
+                    error: function (e) {
+                        console.log("errr>>>>>>",e)
+                    }
+
+                });
+            });
+
+        });
+
+        function updateFunction() {
+            alert("You entered Update button");
+        }
+        function deleteFunction() {
+            alert("You entered Delete button");
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Select Your Option</h2>
+
+        <button type="button" class="btn btn-primary" id="insert">Insert</button>
+        <button type=" button" class="btn btn-primary" id="view">View</button>
+        <button type=" button" class="btn btn-primary" onclick="updateFunction()">Update</button>
+        <button type="button" class="btn btn-primary" onclick="deleteFunction()">Delete</button>
+        <div class="form-group">
+            <label for="pname"> Book Name:</label>
+            <input type="text" class="form-control" id="bookname" name="bookname">
+        </div>
+        <div class="form-group">
+            <label for="pmrp">Author Name:</label>
+            <input type="text" class="form-control" id="authorname" name="authorname">
+        </div>
+        <div class="form-group">
+            <label for="pmrp">Book price:</label>
+            <input type="text" class="form-control" id="bookprice" name="bookprice">
+        </div>
+
+        <h2>List</h2>
+        <table id="library" style="width: 100%" >
+            <tr class="row" id="head1">
+                <th class="col-sm-3" style="background-color:yellow;">Book Id</th>
+                <th class="col-sm-3" style="background-color:orange;">Book Name</th>
+                <th class="col-sm-3" style="background-color:yellow;">Author Name</th>
+                <th class="col-sm-3" style="background-color:orange;">Book Price</th>
+            </tr>
+            
+        </table>
+
+    </div>
+</body>
+
+</html>
+
+
+
